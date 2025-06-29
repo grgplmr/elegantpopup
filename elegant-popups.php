@@ -273,7 +273,7 @@ class ElegantPopups {
             $new_options = array();
             
             // Pop-up d'accueil
-            $welcome_content = wp_kses_post($_POST['welcome_content']);
+            $welcome_content = wp_kses_post(wp_unslash($_POST['welcome_content']));
             $new_options['welcome_popup'] = array(
                 'enabled' => isset($_POST['welcome_enabled']),
                 'content' => $welcome_content,
@@ -288,7 +288,7 @@ class ElegantPopups {
             );
             
             // Pop-up de sortie
-            $exit_content = wp_kses_post($_POST['exit_content']);
+            $exit_content = wp_kses_post(wp_unslash($_POST['exit_content']));
             $new_options['exit_popup'] = array(
                 'enabled' => isset($_POST['exit_enabled']),
                 'content' => $exit_content,
