@@ -190,15 +190,15 @@ window.addEventListener('elegantPopupClosed', function(e) {
 ## Performance
 
 ### Optimisations
-- CSS et JS minifiés en production
+- Les fichiers CSS et JS fournis ne sont pas minifiés par défaut (à minifier pour la production)
 - Chargement conditionnel (admin/frontend)
 - Pas de jQuery requis en frontend
 - Images optimisées via Pexels
 - Cache des options
 
 ### Métriques
-- Taille CSS : ~8KB (minifié)
-- Taille JS : ~12KB (minifié)
+- Taille CSS : ~5,5KB par fichier (non minifié)
+- Taille JS : ~12KB par fichier (non minifié)
 - Impact performance : Minimal
 - Temps de chargement : <100ms
 
