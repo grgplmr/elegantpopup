@@ -1,0 +1,18 @@
+# Ignore Git hooks
+.git/hooks/
+
+# Build artifacts
+build/
+dist/
+*.o
+*.exe
+*.out
+*.log
+*.pyc
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*~
+.DS_Store
