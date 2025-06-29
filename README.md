@@ -229,6 +229,8 @@ Les contributions sont les bienvenues ! Consultez les guidelines de contribution
 - **1.0.0** : Version initiale
   - Pop-up d'accueil et de sortie
   - Design glassmorphism
+- **1.0.1** : Corrections diverses
+  - Prise en compte des modifications de texte pour les pop-ups
   - Interface d'administration complète
   - Support multilingue
 
