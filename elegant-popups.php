@@ -3,7 +3,7 @@
  * Plugin Name: Elegant Popups
  * Plugin URI: https://example.com/elegant-popups
  * Description: Plugin WordPress pour afficher des pop-ups personnalisables avec design glassmorphism - pop-up d'accueil et de sortie d'intention.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Votre Nom
  * Author URI: https://example.com
  * Text Domain: elegant-popups
@@ -21,7 +21,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Définir les constantes du plugin
-define('ELEGANT_POPUPS_VERSION', '1.0.0');
+define('ELEGANT_POPUPS_VERSION', '1.0.1');
 define('ELEGANT_POPUPS_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('ELEGANT_POPUPS_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('ELEGANT_POPUPS_TEXT_DOMAIN', 'elegant-popups');
@@ -49,7 +49,8 @@ class ElegantPopups {
             'width' => '400',
             'height' => '300',
             'delay' => '3000',
-            'show_once' => true
+            'show_once' => true,
+            'hash' => ''
         ),
         'exit_popup' => array(
             'enabled' => false,
@@ -58,7 +59,8 @@ class ElegantPopups {
             'text_color' => '#1f2937',
             'font_size' => '16',
             'width' => '400',
-            'height' => '250'
+            'height' => '250',
+            'hash' => ''
         )
     );
     
@@ -115,7 +117,10 @@ class ElegantPopups {
      */
     public function activate() {
         if (!get_option('elegant_popups_options')) {
-            add_option('elegant_popups_options', $this->default_options);
+            $defaults = $this->default_options;
+            $defaults['welcome_popup']['hash'] = md5($defaults['welcome_popup']['content']);
+            $defaults['exit_popup']['hash'] = md5($defaults['exit_popup']['content']);
+            add_option('elegant_popups_options', $defaults);
         }
         flush_rewrite_rules();
     }
@@ -208,6 +213,22 @@ class ElegantPopups {
     public function enqueue_scripts() {
         // Ne charger que si au moins un popup est activé
         $options = get_option('elegant_popups_options', $this->default_options);
+
+        // S'assurer que les hashes de contenu existent
+        $updated = false;
+        if (!isset($options['welcome_popup']['hash'])) {
+            $options['welcome_popup']['hash'] = md5($options['welcome_popup']['content']);
+            $updated = true;
+        }
+
+        if (!isset($options['exit_popup']['hash'])) {
+            $options['exit_popup']['hash'] = md5($options['exit_popup']['content']);
+            $updated = true;
+        }
+
+        if ($updated) {
+            update_option('elegant_popups_options', $options);
+        }
         
         if (!$options['welcome_popup']['enabled'] && !$options['exit_popup']['enabled']) {
             return;
@@ -252,27 +273,31 @@ class ElegantPopups {
             $new_options = array();
             
             // Pop-up d'accueil
+            $welcome_content = wp_kses_post($_POST['welcome_content']);
             $new_options['welcome_popup'] = array(
                 'enabled' => isset($_POST['welcome_enabled']),
-                'content' => wp_kses_post($_POST['welcome_content']),
+                'content' => $welcome_content,
                 'background_color' => sanitize_text_field($_POST['welcome_bg_color']),
                 'text_color' => sanitize_hex_color($_POST['welcome_text_color']),
                 'font_size' => intval($_POST['welcome_font_size']),
                 'width' => intval($_POST['welcome_width']),
                 'height' => intval($_POST['welcome_height']),
                 'delay' => intval($_POST['welcome_delay']),
-                'show_once' => isset($_POST['welcome_show_once'])
+                'show_once' => isset($_POST['welcome_show_once']),
+                'hash' => md5($welcome_content)
             );
             
             // Pop-up de sortie
+            $exit_content = wp_kses_post($_POST['exit_content']);
             $new_options['exit_popup'] = array(
                 'enabled' => isset($_POST['exit_enabled']),
-                'content' => wp_kses_post($_POST['exit_content']),
+                'content' => $exit_content,
                 'background_color' => sanitize_text_field($_POST['exit_bg_color']),
                 'text_color' => sanitize_hex_color($_POST['exit_text_color']),
                 'font_size' => intval($_POST['exit_font_size']),
                 'width' => intval($_POST['exit_width']),
-                'height' => intval($_POST['exit_height'])
+                'height' => intval($_POST['exit_height']),
+                'hash' => md5($exit_content)
             );
             
             update_option('elegant_popups_options', $new_options);

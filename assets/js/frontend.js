@@ -13,14 +13,22 @@ class ElegantPopups {
         this.activePopup = null;
         this.storageAvailable = true;
         this.welcomeShownFallback = false;
+        this.currentWelcomeHash = this.options.welcome_popup?.hash || '';
 
         // Vérification du stockage local pour le pop-up d'accueil
         try {
             this.welcomeShownBefore = localStorage.getItem('elegant_welcome_shown') === 'true';
+            this.welcomeVersion = localStorage.getItem('elegant_welcome_version');
             this.welcomeShownFallback = this.welcomeShownBefore;
         } catch (e) {
             this.storageAvailable = false;
             this.welcomeShownBefore = this.welcomeShownFallback;
+            this.welcomeVersion = null;
+        }
+
+        if (this.welcomeVersion !== this.currentWelcomeHash) {
+            this.welcomeShownBefore = false;
+            this.welcomeShownFallback = false;
         }
         
         // Debug
@@ -220,6 +228,7 @@ class ElegantPopups {
             if (this.options.welcome_popup.show_once) {
                 try {
                     localStorage.setItem('elegant_welcome_shown', 'true');
+                    localStorage.setItem('elegant_welcome_version', this.currentWelcomeHash);
                     this.welcomeShownFallback = true;
                 } catch (e) {
                     this.storageAvailable = false;
@@ -306,6 +315,7 @@ class ElegantPopups {
     resetWelcomePopup() {
         try {
             localStorage.removeItem('elegant_welcome_shown');
+            localStorage.removeItem('elegant_welcome_version');
         } catch (e) {
             this.storageAvailable = false;
         }
