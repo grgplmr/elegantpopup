@@ -336,19 +336,32 @@ if (document.readyState === 'loading') {
 }
 
 function initializePopups() {
-    // Attendre un peu pour s'assurer que elegantPopupsData est disponible
-    setTimeout(() => {
-        if (typeof elegantPopupsData !== 'undefined') {
+    let observer;
+
+    const tryInit = () => {
+        const container = document.getElementById('elegant-popups-container');
+        if (typeof elegantPopupsData !== 'undefined' && container) {
             elegantPopupsInstance = new ElegantPopups();
-            
+
             // Exposer l'instance pour l'utilisation externe
             window.ElegantPopups = elegantPopupsInstance;
-        } else {
-            if (DEBUG) console.log('elegantPopupsData not found, retrying...');
-            // Réessayer après un délai
-            setTimeout(initializePopups, 500);
+
+            if (observer) {
+                observer.disconnect();
+            }
+            return true;
         }
-    }, 100);
+        return false;
+    };
+
+    if (tryInit()) {
+        return;
+    }
+
+    if (DEBUG) console.log('Waiting for #elegant-popups-container...');
+
+    observer = new MutationObserver(tryInit);
+    observer.observe(document.body, { childList: true, subtree: true });
 }
 
 // Support pour les anciens navigateurs
