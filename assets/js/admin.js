@@ -139,7 +139,9 @@ const ElegantPopupsAdmin = {
             class: 'elegant-popup-content',
             html: data.content,
             css: {
-                fontSize: data.font_size + 'px !important'
+                fontSize: data.font_size + 'px !important',
+                maxHeight: '100%',
+                overflowY: 'auto'
             }
         });
         

@@ -165,6 +165,11 @@
     animation: previewFadeIn 0.5s ease;
 }
 
+.preview-popup .elegant-popup-content {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
 @keyframes previewFadeIn {
     from {
         opacity: 0;
