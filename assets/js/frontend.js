@@ -11,9 +11,17 @@ class ElegantPopups {
         this.isExitIntentTriggered = false;
         this.isWelcomeShown = false;
         this.activePopup = null;
-        
+        this.storageAvailable = true;
+        this.welcomeShownFallback = false;
+
         // Vérification du stockage local pour le pop-up d'accueil
-        this.welcomeShownBefore = localStorage.getItem('elegant_welcome_shown') === 'true';
+        try {
+            this.welcomeShownBefore = localStorage.getItem('elegant_welcome_shown') === 'true';
+            this.welcomeShownFallback = this.welcomeShownBefore;
+        } catch (e) {
+            this.storageAvailable = false;
+            this.welcomeShownBefore = this.welcomeShownFallback;
+        }
         
         // Debug
         if (DEBUG) console.log('ElegantPopups initialized', this.options);
@@ -210,7 +218,13 @@ class ElegantPopups {
         if (type === 'welcome') {
             this.isWelcomeShown = true;
             if (this.options.welcome_popup.show_once) {
-                localStorage.setItem('elegant_welcome_shown', 'true');
+                try {
+                    localStorage.setItem('elegant_welcome_shown', 'true');
+                    this.welcomeShownFallback = true;
+                } catch (e) {
+                    this.storageAvailable = false;
+                    this.welcomeShownFallback = true;
+                }
             }
         }
         
@@ -290,7 +304,12 @@ class ElegantPopups {
     }
     
     resetWelcomePopup() {
-        localStorage.removeItem('elegant_welcome_shown');
+        try {
+            localStorage.removeItem('elegant_welcome_shown');
+        } catch (e) {
+            this.storageAvailable = false;
+        }
+        this.welcomeShownFallback = false;
         this.welcomeShownBefore = false;
         this.isWelcomeShown = false;
     }
