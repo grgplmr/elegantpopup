@@ -240,6 +240,10 @@ class ElegantPopups {
      * Page d'administration
      */
     public function admin_page() {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('Vous n\'avez pas les droits nécessaires pour accéder à cette page.', ELEGANT_POPUPS_TEXT_DOMAIN));
+        }
+
         $options = get_option('elegant_popups_options', $this->default_options);
         
         if (isset($_POST['submit'])) {
