@@ -1,0 +1,148 @@
+# Copyright (C) 2024 Elegant Popups
+# This file is distributed under the same license as the Elegant Popups package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Elegant Popups 1.0.0\n"
+"Report-Msgid-Bugs-To: https://example.com/support\n"
+"POT-Creation-Date: 2024-01-01 12:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: elegant-popups.php:150
+msgid "Elegant Popups"
+msgstr ""
+
+#: elegant-popups.php:178
+msgid "Pop-up d'accueil"
+msgstr ""
+
+#: elegant-popups.php:186
+msgid "Pop-up de sortie d'intention"
+msgstr ""
+
+#: elegant-popups.php:260
+msgid "Options sauvegardées avec succès !"
+msgstr ""
+
+#: elegant-popups.php:275
+msgid "Configurez votre pop-up d'accueil qui s'affiche après un délai choisi."
+msgstr ""
+
+#: elegant-popups.php:282
+msgid "Configurez votre pop-up de sortie d'intention qui s'affiche quand l'utilisateur veut quitter la page."
+msgstr ""
+
+#: templates/admin-page.php:8
+msgid "Elegant Popups - Configuration"
+msgstr ""
+
+#: templates/admin-page.php:15
+msgid "Pop-up d'accueil"
+msgstr ""
+
+#: templates/admin-page.php:18
+msgid "Pop-up de sortie"
+msgstr ""
+
+#: templates/admin-page.php:21
+msgid "Aperçu"
+msgstr ""
+
+#: templates/admin-page.php:29
+msgid "Configuration Pop-up d'accueil"
+msgstr ""
+
+#: templates/admin-page.php:34
+msgid "Activer"
+msgstr ""
+
+#: templates/admin-page.php:37
+msgid "Activer le pop-up d'accueil"
+msgstr ""
+
+#: templates/admin-page.php:43
+msgid "Contenu"
+msgstr ""
+
+#: templates/admin-page.php:57
+msgid "Couleur de fond"
+msgstr ""
+
+#: templates/admin-page.php:60
+msgid "Format RGBA recommandé pour la transparence (ex: rgba(255,255,255,0.1))"
+msgstr ""
+
+#: templates/admin-page.php:65
+msgid "Couleur du texte"
+msgstr ""
+
+#: templates/admin-page.php:71
+msgid "Taille de police"
+msgstr ""
+
+#: templates/admin-page.php:77
+msgid "Dimensions"
+msgstr ""
+
+#: templates/admin-page.php:80
+msgid "Largeur:"
+msgstr ""
+
+#: templates/admin-page.php:85
+msgid "Hauteur:"
+msgstr ""
+
+#: templates/admin-page.php:92
+msgid "Délai d'apparition"
+msgstr ""
+
+#: templates/admin-page.php:95
+msgid "Délai en millisecondes avant l'affichage (1000ms = 1 seconde)"
+msgstr ""
+
+#: templates/admin-page.php:100
+msgid "Affichage unique"
+msgstr ""
+
+#: templates/admin-page.php:103
+msgid "N'afficher qu'une seule fois par visiteur"
+msgstr ""
+
+#: templates/admin-page.php:113
+msgid "Configuration Pop-up de sortie"
+msgstr ""
+
+#: templates/admin-page.php:120
+msgid "Activer le pop-up de sortie d'intention"
+msgstr ""
+
+#: templates/admin-page.php:190
+msgid "Aperçu des pop-ups"
+msgstr ""
+
+#: templates/admin-page.php:193
+msgid "Cliquez sur les boutons ci-dessous pour prévisualiser vos pop-ups :"
+msgstr ""
+
+#: templates/admin-page.php:196
+msgid "Aperçu Pop-up d'accueil"
+msgstr ""
+
+#: templates/admin-page.php:200
+msgid "Aperçu Pop-up de sortie"
+msgstr ""
+
+#: templates/admin-page.php:207
+msgid "Enregistrer les modifications"
+msgstr ""
+
+#: templates/frontend-popups.php:48
+#: templates/frontend-popups.php:78
+msgid "Fermer"
+msgstr ""
