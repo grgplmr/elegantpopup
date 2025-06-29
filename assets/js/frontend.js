@@ -76,57 +76,62 @@ class ElegantPopups {
         }
         
         if (DEBUG) console.log('Setting up exit popup listeners...');
-        
-        // Détection desktop : souris qui sort du viewport
-        document.addEventListener('mouseleave', (e) => {
-            if (e.clientY <= 0 && !this.isExitIntentTriggered && !this.activePopup) {
-                if (DEBUG) console.log('Exit intent detected (mouse)');
-                this.showPopup('exit');
-                this.isExitIntentTriggered = true;
-            }
-        });
-        
-        // Détection mobile : scroll rapide vers le haut
-        let lastScrollTop = 0;
-        let scrollStartTime = 0;
-        
-        window.addEventListener('scroll', () => {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            const currentTime = Date.now();
-            
-            if (scrollTop === 0 && lastScrollTop > 50) {
-                // Scroll rapide vers le haut sur mobile
-                if (currentTime - scrollStartTime < 500 && !this.isExitIntentTriggered && !this.activePopup) {
-                    if (DEBUG) console.log('Exit intent detected (scroll)');
+
+        // Introduce a short delay before activating the listeners to avoid false positives
+        setTimeout(() => {
+            if (DEBUG) console.log('Exit popup listeners activated');
+
+            // Détection desktop : souris qui sort du viewport
+            document.addEventListener('mouseleave', (e) => {
+                if (e.clientY <= 0 && e.relatedTarget === null && !this.isExitIntentTriggered && !this.activePopup) {
+                    if (DEBUG) console.log('Exit intent detected (mouse)');
                     this.showPopup('exit');
                     this.isExitIntentTriggered = true;
                 }
-            }
-            
-            if (scrollTop > lastScrollTop) {
-                scrollStartTime = currentTime;
-            }
-            
-            lastScrollTop = scrollTop;
-        }, { passive: true });
-        
-        // Détection mobile : geste de retour/fermeture
-        let touchStartY = 0;
-        document.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-        
-        document.addEventListener('touchmove', (e) => {
-            const touchY = e.touches[0].clientY;
-            const diff = touchStartY - touchY;
-            
-            // Swipe vers le haut rapide depuis le haut de l'écran
-            if (touchStartY < 50 && diff > 100 && !this.isExitIntentTriggered && !this.activePopup) {
-                if (DEBUG) console.log('Exit intent detected (touch)');
-                this.showPopup('exit');
-                this.isExitIntentTriggered = true;
-            }
-        }, { passive: true });
+            });
+
+            // Détection mobile : scroll rapide vers le haut
+            let lastScrollTop = 0;
+            let scrollStartTime = 0;
+
+            window.addEventListener('scroll', () => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const currentTime = Date.now();
+
+                if (scrollTop === 0 && lastScrollTop > 50) {
+                    // Scroll rapide vers le haut sur mobile
+                    if (currentTime - scrollStartTime < 500 && !this.isExitIntentTriggered && !this.activePopup) {
+                        if (DEBUG) console.log('Exit intent detected (scroll)');
+                        this.showPopup('exit');
+                        this.isExitIntentTriggered = true;
+                    }
+                }
+
+                if (scrollTop > lastScrollTop) {
+                    scrollStartTime = currentTime;
+                }
+
+                lastScrollTop = scrollTop;
+            }, { passive: true });
+
+            // Détection mobile : geste de retour/fermeture
+            let touchStartY = 0;
+            document.addEventListener('touchstart', (e) => {
+                touchStartY = e.touches[0].clientY;
+            }, { passive: true });
+
+            document.addEventListener('touchmove', (e) => {
+                const touchY = e.touches[0].clientY;
+                const diff = touchStartY - touchY;
+
+                // Swipe vers le haut rapide depuis le haut de l'écran
+                if (touchStartY < 50 && diff > 100 && !this.isExitIntentTriggered && !this.activePopup) {
+                    if (DEBUG) console.log('Exit intent detected (touch)');
+                    this.showPopup('exit');
+                    this.isExitIntentTriggered = true;
+                }
+            }, { passive: true });
+        }, 1000);
     }
     
     setupEventListeners() {
