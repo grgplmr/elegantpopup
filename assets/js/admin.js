@@ -204,6 +204,10 @@ const ElegantPopupsAdmin = {
         
         // Validation avant soumission
         jQuery('form').on('submit', (e) => {
+            // S'assure que les éditeurs TinyMCE synchronisent leur contenu
+            if (typeof tinyMCE !== 'undefined') {
+                tinyMCE.triggerSave();
+            }
             return this.validateForm();
         });
     },
