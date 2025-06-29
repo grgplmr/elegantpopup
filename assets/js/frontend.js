@@ -3,6 +3,8 @@
  * Gestion des pop-ups avec glassmorphism design
  */
 
+const DEBUG = window.elegantPopupsData?.debug || false;
+
 class ElegantPopups {
     constructor() {
         this.options = window.elegantPopupsData?.options || {};
@@ -14,7 +16,7 @@ class ElegantPopups {
         this.welcomeShownBefore = localStorage.getItem('elegant_welcome_shown') === 'true';
         
         // Debug
-        console.log('ElegantPopups initialized', this.options);
+        if (DEBUG) console.log('ElegantPopups initialized', this.options);
         
         this.init();
     }
@@ -29,7 +31,7 @@ class ElegantPopups {
     }
     
     setupPopups() {
-        console.log('Setting up popups...');
+        if (DEBUG) console.log('Setting up popups...');
         this.setupWelcomePopup();
         this.setupExitPopup();
         this.setupEventListeners();
@@ -38,30 +40,30 @@ class ElegantPopups {
     
     setupWelcomePopup() {
         if (!this.options.welcome_popup?.enabled) {
-            console.log('Welcome popup disabled');
+            if (DEBUG) console.log('Welcome popup disabled');
             return;
         }
         
         const popup = document.getElementById('elegant-welcome-popup');
         if (!popup) {
-            console.log('Welcome popup element not found');
+            if (DEBUG) console.log('Welcome popup element not found');
             return;
         }
         
-        console.log('Welcome popup found, checking conditions...');
+        if (DEBUG) console.log('Welcome popup found, checking conditions...');
         
         // Vérifier si on doit afficher une seule fois
         if (this.options.welcome_popup.show_once && this.welcomeShownBefore) {
-            console.log('Welcome popup already shown before');
+            if (DEBUG) console.log('Welcome popup already shown before');
             return;
         }
         
         const delay = parseInt(this.options.welcome_popup.delay) || 3000;
-        console.log('Setting welcome popup delay:', delay);
+        if (DEBUG) console.log('Setting welcome popup delay:', delay);
         
         setTimeout(() => {
             if (!this.isWelcomeShown && !this.activePopup) {
-                console.log('Showing welcome popup');
+                if (DEBUG) console.log('Showing welcome popup');
                 this.showPopup('welcome');
             }
         }, delay);
@@ -69,16 +71,16 @@ class ElegantPopups {
     
     setupExitPopup() {
         if (!this.options.exit_popup?.enabled) {
-            console.log('Exit popup disabled');
+            if (DEBUG) console.log('Exit popup disabled');
             return;
         }
         
-        console.log('Setting up exit popup listeners...');
+        if (DEBUG) console.log('Setting up exit popup listeners...');
         
         // Détection desktop : souris qui sort du viewport
         document.addEventListener('mouseleave', (e) => {
             if (e.clientY <= 0 && !this.isExitIntentTriggered && !this.activePopup) {
-                console.log('Exit intent detected (mouse)');
+                if (DEBUG) console.log('Exit intent detected (mouse)');
                 this.showPopup('exit');
                 this.isExitIntentTriggered = true;
             }
@@ -95,7 +97,7 @@ class ElegantPopups {
             if (scrollTop === 0 && lastScrollTop > 50) {
                 // Scroll rapide vers le haut sur mobile
                 if (currentTime - scrollStartTime < 500 && !this.isExitIntentTriggered && !this.activePopup) {
-                    console.log('Exit intent detected (scroll)');
+                    if (DEBUG) console.log('Exit intent detected (scroll)');
                     this.showPopup('exit');
                     this.isExitIntentTriggered = true;
                 }
@@ -120,7 +122,7 @@ class ElegantPopups {
             
             // Swipe vers le haut rapide depuis le haut de l'écran
             if (touchStartY < 50 && diff > 100 && !this.isExitIntentTriggered && !this.activePopup) {
-                console.log('Exit intent detected (touch)');
+                if (DEBUG) console.log('Exit intent detected (touch)');
                 this.showPopup('exit');
                 this.isExitIntentTriggered = true;
             }
@@ -132,13 +134,13 @@ class ElegantPopups {
         document.addEventListener('click', (e) => {
             if (e.target.matches('.elegant-popup-close') || 
                 e.target.matches('.elegant-popup-close span')) {
-                console.log('Close button clicked');
+                if (DEBUG) console.log('Close button clicked');
                 this.closeActivePopup();
             }
             
             // Clic sur l'overlay
             if (e.target.matches('.elegant-popups-overlay')) {
-                console.log('Overlay clicked');
+                if (DEBUG) console.log('Overlay clicked');
                 this.closeActivePopup();
             }
         });
@@ -146,7 +148,7 @@ class ElegantPopups {
         // Gestion du clavier
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && this.activePopup) {
-                console.log('Escape key pressed');
+                if (DEBUG) console.log('Escape key pressed');
                 this.closeActivePopup();
             }
             
@@ -167,7 +169,7 @@ class ElegantPopups {
     
     showPopup(type) {
         if (this.activePopup) {
-            console.log('Another popup is already active');
+            if (DEBUG) console.log('Another popup is already active');
             return;
         }
         
@@ -176,11 +178,11 @@ class ElegantPopups {
         const overlay = document.getElementById('elegant-popups-overlay');
         
         if (!popup || !overlay) {
-            console.log('Popup or overlay not found:', popupId);
+            if (DEBUG) console.log('Popup or overlay not found:', popupId);
             return;
         }
         
-        console.log('Showing popup:', type);
+        if (DEBUG) console.log('Showing popup:', type);
         this.activePopup = popup;
         
         // Afficher l'overlay
@@ -219,7 +221,7 @@ class ElegantPopups {
     closeActivePopup() {
         if (!this.activePopup) return;
         
-        console.log('Closing active popup');
+        if (DEBUG) console.log('Closing active popup');
         const overlay = document.getElementById('elegant-popups-overlay');
         
         // Masquer le pop-up
@@ -308,7 +310,7 @@ function initializePopups() {
             // Exposer l'instance pour l'utilisation externe
             window.ElegantPopups = elegantPopupsInstance;
         } else {
-            console.log('elegantPopupsData not found, retrying...');
+            if (DEBUG) console.log('elegantPopupsData not found, retrying...');
             // Réessayer après un délai
             setTimeout(initializePopups, 500);
         }
